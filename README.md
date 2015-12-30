@@ -29,7 +29,16 @@ The debug level mentionen is the gstreamer debug level as described in [the docs
 
 Default is 0, ie. no debug. If you need more info, start at 1 - higher number quickly ends up with ridiculous amount of debug info.
 
+
 convertVideoToh264.sh
 ---------------------
 
-Converts whatever [decodebin] can handle and saves it as h264/aac with a 5Mbit/s bitrate
+Converts whatever [decodebin](http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-plugins/html/gst-plugins-base-plugins-decodebin.html) can handle and saves it as h264/aac with a 5Mbit/s bitrate
+
+
+extractsAudio.sh
+---------------------
+
+Decodes the video, and saves the audio stream as an aac file.
+
+
