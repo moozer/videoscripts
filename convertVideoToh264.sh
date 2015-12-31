@@ -23,6 +23,11 @@ OUTNAME="$INNAME.mp4"
 BITRATE=5120
 # 5Mbit/s seems to be recommended
 
+echo "--------"
+echo "Converting video $INNAME"
+echo "--------"
+
+
 # pipeline
 #   decode whatever and send it to "bin"
 #   encode audio to aac using voaacenc and send to outmux
@@ -35,6 +40,10 @@ gst-launch-1.0 filesrc location=$INNAME ! decodebin name=bin \
   mp4mux name=outmux ! filesink location=$OUTNAME \
   --gst-debug-level=$DEBUGLVL
   
+    
+echo "--------"
 echo "Saved stream to $OUTNAME"
+echo "--------"
   
+ 
  
