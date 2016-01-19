@@ -42,3 +42,14 @@ extractsAudio.sh
 Decodes the video, and saves the audio stream as an aac file.
 
 
+replaceAudio.sh
+----------------
+
+Takes a video and an audio stream, and reencodes it to a video combining the video with the audio from the other file.
+It gets decoded and reencoded as AAC and h264 at 5Mbit/s.
+
+The audio streams may from a file with both video and audio, as long as gstreamers decodebin can handle it.
+
+I use it in combineation with extraceAudio.sh. The audio is filetered/processed with audacity, and then recombined with the original video.
+
+
