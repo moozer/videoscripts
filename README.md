@@ -55,24 +55,24 @@ I use it in combineation with extraceAudio.sh. The audio is filetered/processed 
 mergeRec.sh
 --------------
 
-The scripts takes to 4:3 video streams and combines them to a 16:9 1080p video stream.
+The scripts takes to 4:3 video streams and combines them to a 16:9 1080p video stream. I use it for the slides+talking head combination.
 
 The first video aka. *bigvideo*, will be full height to the left and the second video aka. *smallvideo* wil be shown in small in the lower right.
 
 Like this:
 
-    | - - - - - - 16- - - - - - - | 
-  - B B B B B B B B B B B B
-  | B B B B B B B B B B B B
-  | B B B B B B B B B B B B
-  | B B B B B B B B B B B B
-  9 B B B B B B B B B B B B
-  | B B B B B B B B B B B B
-  | B B B B B B B B B B B B S S S S -
-  | B B B B B B B B B B B B S S S S 3 
-  - B B B B B B B B B B B B S S S S -
-    |<- - - - 12- - - - ->| |<-4->| 
+      | - - - - - - 16- - - - - - - | 
+    - B B B B B B B B B B B B
+    | B B B B B B B B B B B B
+    | B B B B B B B B B B B B
+    | B B B B B B B B B B B B
+    9 B B B B B B B B B B B B
+    | B B B B B B B B B B B B
+    | B B B B B B B B B B B B S S S S -
+    | B B B B B B B B B B B B S S S S 3 
+    - B B B B B B B B B B B B S S S S -
+      |<- - - - 12- - - - ->| |<-4->| 
 
 The attentive reader will notice ample room for two extra "small" feeds. I have thought of this, but it hasn't been relevant yet. Feel free to do a pull request.
 
-The audio is taken from *bigvideo*
+The audio is taken from *bigvideo*.
