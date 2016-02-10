@@ -10,8 +10,9 @@ CAM_FORMAT="YV12"
 ALSA_DEVICE="C920"
 
 # screencasting
-#X_FPS="15/1"
-X_FPS="$CAM_FPS"
+X_FPS="15/1"
+#X_FPS="$CAM_FPS"
 
-# theora encoding
-#ENC_BPS="512"
+# x264 encoding
+BITRATE=5120
+OUT_FPS="$CAM_FPS"
