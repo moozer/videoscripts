@@ -8,7 +8,7 @@ if [ -z "$1" ]; then
 #	echo "xid may be optained by"
 #	echo "xprop _NET_WM_PID | cut -d' ' -f3"
 #	exit 1
-    echo "Plaese select windows to record from....."
+    echo "Please select windows to record from....."
 	TITLE=$(xprop WM_NAME | cut -d '"' -f2)
 	X_ID=$(xwininfo -tree -root -all | egrep "$TITLE" | sed -e 's/^ *//' | cut -d' ' -f1)
 else
@@ -51,8 +51,8 @@ done
 ## debugging - choose one
 ## go here for details
 # https://developer.ridgerun.com/wiki/index.php/How_to_generate_a_Gstreamer_pipeline_diagram_%28graph%29
-#export GST_DEBUG_DUMP_DOT_DIR=.
-unset GST_DEBUG_DUMP_DOT_DIR
+export GST_DEBUG_DUMP_DOT_DIR=.
+#unset GST_DEBUG_DUMP_DOT_DIR
 
 OUTFILE="$SUFFIX-recvid.ogv"
 echo "Recording"
@@ -63,72 +63,33 @@ gst-launch-1.0 \
   --gst-debug-level=$DEBUGLVL \
   ximagesrc use-damage=false do-timestamp=true xid=$X_ID \
     ! video/x-raw,framerate=\(fraction\)$X_FPS \
-    ! progressreport \
+    ! progressreport name=screeninput\
     ! tee name=vid \
     vid. ! queue ! videoconvert ! videorate \
          ! video/x-raw,framerate=\(fraction\)$OUT_FPS \
-         ! theoraenc ! outmux. \
-    vid. ! queue ! timeoverlay ! ximagesink sync=false \
+         ! x264enc bitrate=$BITRATE ! outmux. \
   pulsesrc do-timestamp=true \
     ! tee name=audio \
-    audio. ! queue ! audioconvert ! vorbisenc ! outmux. \
-    audio. ! wavescope style=0 ! videoconvert ! timeoverlay ! ximagesink sync=false \
-  oggmux name=outmux ! filesink location=$OUTFILE \
-
-#~ audio. ! wavescope style=0 ! videoconvert ! xvimagesink \
-
+    audio. ! queue ! audioconvert ! voaacenc ! outmux. \
+  mp4mux name=outmux ! filesink location=$OUTFILE \
 
 #~ gst-launch-1.0 \
   #~ --gst-debug-level=$DEBUGLVL \
-  #~ ximagesrc use-damage=false do-timestamp=true xid=$X_ID  ! video/x-raw,framerate=\(fraction\)$X_FPS !  \
-    #~ tee name=vid ! \
-      #~ timeoverlay ! ximagesink sync=true \
-      #~ vid. ! videoconvert ! x264enc bitrate=$BITRATE ! outmux. \
-  #~ pulsesrc do-timestamp=true ! \
-    #~ tee name=audio ! \
-      #~ wavescope style=0 ! videoconvert ! xvimagesink \
-      #~ audio. ! audioconvert ! voaacenc ! outmux. \
+  #~ ximagesrc use-damage=false do-timestamp=true xid=$X_ID \
+    #~ ! video/x-raw,framerate=\(fraction\)$X_FPS \
+    #~ ! progressreport name=screeninput\
+    #~ ! tee name=vid \
+    #~ vid. ! queue ! videoconvert ! videorate \
+         #~ ! video/x-raw,framerate=\(fraction\)$OUT_FPS \
+         #~ ! x264enc bitrate=$BITRATE ! outmux. \
+    #~ vid. ! queue ! timeoverlay ! ximagesink sync=true \
+  #~ pulsesrc do-timestamp=true \
+    #~ ! tee name=audio \
+    #~ audio. ! queue ! audioconvert ! voaacenc ! outmux. \
+    #~ audio. ! wavescope style=0 ! videoconvert ! timeoverlay ! ximagesink sync=false \
   #~ mp4mux name=outmux ! filesink location=$OUTFILE \
+#~ 
 
-
-      #~ vid. ! videoconvert ! x264enc bitrate=$BITRATE ! outmux. \
-
-  #~ pulsesrc do-timestamp=true ! audioconvert ! voaacenc ! outmux. \
-  #~ mp4mux name=outmux ! filesink location=$OUTFILE \
-      
-
-      
-#      vid. ! filesink location=$OUTFILE
-      
-      
-#      videoconvert ! videorate ! x264enc ! outmux. \
-#  mp4mux name=outmux ! queue ! filesink location=$OUTFILE \
-
-
-      
-      
-  #~ pulsesrc do-timestamp=true ! audioconvert ! voaacenc ! outmux. \
-  #~ 
-
-  #\device-name=$ALSA_DEVICE   ! voaacenc
-  #  queue name=windowoutput ! timeoverlay ! videoconvert ! xvimagesink sync=false \
-
-
-#    ! tee name=vid \
-#      vid. ! 
-#     ! queue name=fileoutput ! x264enc bitrate=$BITRATE ! outmux. \
-#   pulsesrc device-name=$ALSA_DEVICE  ! audioconvert ! voaacenc ! outmux. \
-#  mp4mux name=outmux ! filesink location=$OUTFILE
-
-
-#  --gst-debug-level=3
-
-#~ gst-launch-1.0 filesrc location=$INNAME ! decodebin name=bin \
-  #~ bin. ! progressreport \
-  #~ ! videoscale ! x264enc bitrate=$BITRATE ! queue ! outmux. \
-  #~ bin. ! audioconvert ! voaacenc ! outmux. \
-  #~ mp4mux name=outmux ! filesink location=$OUTNAME \
-  #~ --gst-debug-level=$DEBUGLVL
 
 echo
 echo "---------------"
